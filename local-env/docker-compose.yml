@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: pet_postgres
+    environment:
+      POSTGRES_DB: pet-service
+      POSTGRES_USER: pet_service
+      POSTGRES_PASSWORD: pet_service
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - common-pet-network
+
+volumes:
+  postgres_data:
+
+networks:
+  common-pet-network:
+    driver: bridge

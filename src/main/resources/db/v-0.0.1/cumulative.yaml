@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: changelogs/2025-10-27-1-create-table-cats.sql
+      relativeToChangelogFile: true
