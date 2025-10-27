@@ -1,7 +1,9 @@
 package com.larchflap.pet_service.controllers
 
+import com.larchflap.pet_service.controllers.dto.CatFilter
 import com.larchflap.pet_service.controllers.dto.CreateCatRequest
 import com.larchflap.pet_service.controllers.dto.CatResponse
+import com.larchflap.pet_service.controllers.dto.CatsListResponse
 import com.larchflap.pet_service.repositories.CatsRepository
 import com.larchflap.pet_service.repositories.entities.CatEntity
 import org.springframework.data.repository.findByIdOrNull
@@ -30,6 +32,20 @@ class CatController(
   @GetMapping("/{id}")
   fun getCatByName(@PathVariable id: UUID): CatResponse? =
     catsRepository.findByIdOrNull(id)?.toResponse()
+
+  @GetMapping
+  fun getCats(filter: CatFilter): CatsListResponse {
+    val cats = if (filter.name != null) {
+      catsRepository.findAllByName(name = filter.name)
+    } else {
+      catsRepository.findAll()
+    }
+
+    return cats.map { it.toResponse() }
+  }
+
+
+  /* Private */
 
   private fun CatEntity.toResponse() = CatResponse(
     id = id!!,
