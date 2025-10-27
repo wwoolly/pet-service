@@ -1,9 +1,9 @@
 package com.larchflap.pet_service.controllers
 
-import com.larchflap.pet_service.controllers.dto.CatFilter
-import com.larchflap.pet_service.controllers.dto.CreateCatRequest
-import com.larchflap.pet_service.controllers.dto.CatResponse
-import com.larchflap.pet_service.controllers.dto.CatsListResponse
+import com.larchflap.pet_service.controllers.dto.requests.CatFilter
+import com.larchflap.pet_service.controllers.dto.requests.CreateCatRequest
+import com.larchflap.pet_service.controllers.dto.responses.CatResponse
+import com.larchflap.pet_service.controllers.dto.responses.CatsListResponse
 import com.larchflap.pet_service.repositories.CatsRepository
 import com.larchflap.pet_service.repositories.entities.CatEntity
 import org.springframework.data.repository.findByIdOrNull

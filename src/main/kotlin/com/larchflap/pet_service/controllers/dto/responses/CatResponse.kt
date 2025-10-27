@@ -1,4 +1,4 @@
-package com.larchflap.pet_service.controllers.dto
+package com.larchflap.pet_service.controllers.dto.responses
 
 import java.util.UUID
 
