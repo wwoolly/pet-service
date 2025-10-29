@@ -6,6 +6,7 @@ import com.larchflap.pet_service.controllers.dto.responses.CatResponse
 import com.larchflap.pet_service.controllers.dto.responses.CatsListResponse
 import com.larchflap.pet_service.repositories.CatsRepository
 import com.larchflap.pet_service.repositories.entities.CatEntity
+import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -20,6 +21,9 @@ import java.util.UUID
 class CatController(
   private val catsRepository: CatsRepository,
 ) {
+
+  private val log = LoggerFactory.getLogger(javaClass)
+
   @PostMapping
   fun createCat(@RequestBody request: CreateCatRequest): CatResponse {
     val entity = CatEntity(name = request.name)
@@ -36,8 +40,10 @@ class CatController(
   @GetMapping
   fun getCats(filter: CatFilter): CatsListResponse {
     val cats = if (filter.name != null) {
+      log.info("Searching cats")
       catsRepository.findAllByName(name = filter.name)
     } else {
+      log.info("Getting all cats")
       catsRepository.findAll()
     }
 

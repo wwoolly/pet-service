@@ -16,3 +16,8 @@ spring:
 
   liquibase:
     change-log: classpath:db/changelog.yaml
+
+logging:
+  level:
+    root: INFO
+    com.larchflap.pet_service: DEBUG
