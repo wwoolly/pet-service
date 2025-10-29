@@ -24,6 +24,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-amqp")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-actuator")
+  implementation("io.micrometer:micrometer-registry-prometheus")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.liquibase:liquibase-core")
   runtimeOnly("org.postgresql:postgresql")

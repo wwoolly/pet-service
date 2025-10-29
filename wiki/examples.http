@@ -1,0 +1,16 @@
+@catId = 11487867-982e-49e5-9f60-76f15cbff9c6
+
+### Get weather
+GET https://weather.nsu.ru
+
+
+### Get cat by ID
+GET http://localhost:8080/cats/{{catId}}
+
+### Create cat
+POST http://localhost:8080/cats
+Content-Type: application/json
+
+{
+  "name": "Снежинка"
+}

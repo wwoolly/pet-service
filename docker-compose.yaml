@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: pet_postgres
+    environment:
+      POSTGRES_DB: pet_service
+      POSTGRES_USER: pet_service
+      POSTGRES_PASSWORD: pet_service
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_2:/var/lib/postgresql/data
+
+  pet-service:
+    build: .
+    container_name: pet-service
+    entrypoint: [ "./gradlew", "bootRun", "--no-daemon" ]
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pet_service
+      SPRING_DATASOURCE_USERNAME: pet_service
+      SPRING_DATASOURCE_PASSWORD: pet_service
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: health,info,prometheus
+      MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED: "true"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+      - gradle-cache:/root/.gradle
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    depends_on:
+      - pet-service
+
+  loki:
+    image: grafana/loki:3.1.1
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./monitoring/loki-config.yaml:/etc/loki/config.yaml
+      - ./data/loki:/loki
+
+  promtail:
+    image: grafana/promtail:3.0.0
+    container_name: promtail
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - /var/log:/var/log
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+      - loki
+    volumes:
+      - ./grafana-provisioning:/etc/grafana/provisioning
+
+volumes:
+  postgres_data_2:
+  gradle-cache:
+  prometheus_data:

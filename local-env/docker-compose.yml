@@ -3,9 +3,9 @@ version: "3.9"
 services:
   postgres:
     image: postgres:16
-    container_name: pet_postgres
+    container_name: pet_postgres_local
     environment:
-      POSTGRES_DB: pet-service
+      POSTGRES_DB: pet_service
       POSTGRES_USER: pet_service
       POSTGRES_PASSWORD: pet_service
     ports:
